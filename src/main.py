@@ -1,9 +1,13 @@
 import tkinter as tk
-
+import requests
 
 class NASA_API():
     def __init__(self, file_path="./key"):
-        
+        # initialise base informations
+
+        # setup the base link for the requests
+        self.base_link = "https://api.nasa.gov/planetary/apod?api_key="
+
         # read the api from the file
         self.api_key = ""
         with open(file_path,"r") as f:
@@ -17,6 +21,15 @@ class NASA_API():
             print("ERROR: couldn't get the API key")
             quit()
 
+    def get_photo_link(self):
+        pass
+    def get_APOC_json(self):
+        r = requests.get(self.base_link+self.api_key)
+
+        if(r.status_code != 200):
+            return False
+        else:
+            print(r.text)
 
 class Application(tk.Frame):
     # constructor for the class
@@ -41,6 +54,7 @@ class Application(tk.Frame):
         self.save_photo_button.pack(side="right")
 
 ap = NASA_API() 
+ap.get_APOC_json()
 root = tk.Tk()
 app = Application(master=root)
 app.mainloop()
