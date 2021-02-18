@@ -1,5 +1,8 @@
 import tkinter as tk
 import requests
+import json
+from PIL import ImageTk, Image
+from requests.api import request
 
 class NASA_API():
     def __init__(self, file_path="./key"):
@@ -22,6 +25,15 @@ class NASA_API():
             quit()
 
     def get_photo_link(self):
+        # return the image link by parsing the json
+        
+        # get the json from NASA api
+        j = json.loads(self.get_APOC_json())
+        
+        # print(j)
+
+        if(j["media_type"] == "image"):
+            return j["hdurl"]
         pass
     def get_APOC_json(self):
         r = requests.get(self.base_link+self.api_key)
@@ -29,7 +41,7 @@ class NASA_API():
         if(r.status_code != 200):
             return False
         else:
-            print(r.text)
+            return r.text
 
 class Application(tk.Frame):
     # constructor for the class
@@ -38,13 +50,18 @@ class Application(tk.Frame):
         self.master = master
         self.pack()
         self.create_widg()
+    def put_image_on_app(self):
+        global api
+        img = ImageTk.PhotoImage(Image.open(requests.get(api.get_photo_link(), stream=True).raw))  
+        print(img)
+        print(self.img_label.create_image(0,0, image=img)) 
+        self.canvas.pack()
     # function used to create the widgets and putting them into the frame
     def create_widg(self):
-
         # button to get the picture
         self.get_photo_button = tk.Button(self)
         self.get_photo_button["text"] = "get the Picture"
-        self.get_photo_button["command"] = None
+        self.get_photo_button["command"] = self.put_image_on_app
         self.get_photo_button.pack(side="bottom")
 
         # button to save the photo
@@ -53,8 +70,12 @@ class Application(tk.Frame):
         self.save_photo_button["state"] = "disabled"
         self.save_photo_button.pack(side="right")
 
-ap = NASA_API() 
-ap.get_APOC_json()
+        # canvas for the photo
+        self.img_label = tk.Canvas(root, width = 300, height = 300)
+        # self.canvas(root, width = 300, height = 300)      
+        self.img_label.pack(side='top')
+api = NASA_API() 
+print(api.get_photo_link())
 root = tk.Tk()
 app = Application(master=root)
 app.mainloop()
