@@ -2,7 +2,7 @@ import tkinter as tk
 import requests
 import json
 from PIL import ImageTk, Image
-from requests.api import request
+
 
 class NASA_API():
     def __init__(self, file_path="./key"):
@@ -48,34 +48,33 @@ class Application(tk.Frame):
     def __init__(self, master=None):
         super().__init__(master)
         self.master = master
-        self.pack()
-        self.create_widg()
-    def put_image_on_app(self):
-        global api
-        img = ImageTk.PhotoImage(Image.open(requests.get(api.get_photo_link(), stream=True).raw))  
-        print(img)
-        print(self.img_label.create_image(0,0, image=img)) 
-        self.canvas.pack()
+        self.create_widgets()
+        self.api = NASA_API() 
     # function used to create the widgets and putting them into the frame
-    def create_widg(self):
+    def create_widgets(self):
+        print("creo widgets")
         # button to get the picture
         self.get_photo_button = tk.Button(self)
         self.get_photo_button["text"] = "get the Picture"
-        self.get_photo_button["command"] = self.put_image_on_app
-        self.get_photo_button.pack(side="bottom")
+        self.get_photo_button["command"] = self.put_image_on_label
+        self.get_photo_button.pack()
 
         # button to save the photo
         self.save_photo_button = tk.Button(self)
         self.save_photo_button["text"] = "save the photo"
         self.save_photo_button["state"] = "disabled"
-        self.save_photo_button.pack(side="right")
+        self.save_photo_button.pack()
 
-        # canvas for the photo
-        self.img_label = tk.Canvas(root, width = 300, height = 300)
-        # self.canvas(root, width = 300, height = 300)      
-        self.img_label.pack(side='top')
-api = NASA_API() 
-print(api.get_photo_link())
-root = tk.Tk()
-app = Application(master=root)
-app.mainloop()
+        self.lbl = tk.Label(self)
+        self.lbl.pack()
+    def put_image_on_label(self):
+        link = api.get_photo_link()
+        img = ImageTk.PhotoImage(Image.open(requests.get(link, stream=True).raw))
+        self.lbl["image"] = img
+
+if(__name__== "__main__"):
+    api = NASA_API() 
+    print(api.get_photo_link())
+    root = tk.Tk()
+    app = Application(master=root)
+    app.mainloop()
