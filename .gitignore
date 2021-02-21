@@ -3,3 +3,4 @@
 !README.md
 !src
 !src/*
+__pycache__
