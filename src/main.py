@@ -1,8 +1,8 @@
 import tkinter as tk
 import requests
 import json
-from PIL import ImageTk, Image
-
+import PIL.Image
+import PIL.ImageTk
 
 class NASA_API():
     def __init__(self, file_path="./key"):
@@ -43,38 +43,38 @@ class NASA_API():
         else:
             return r.text
 
+
 class Application(tk.Frame):
-    # constructor for the class
-    def __init__(self, master=None):
-        super().__init__(master)
+    def change_img(self):
+        self.img = PIL.ImageTk.PhotoImage(self.im)
+        self.lab.config(image=self.img)
+    def create_widget(self):
+        # create the get image button.
+        tk.Button(text="get image", command=self.open_image).pack()
+        # create the label which will be used to display the image
+        self.lab = tk.Label(self)
+        # pack the label
+        self.lab.pack()
+        # pack the window
+        self.pack()
+    def open_image(self):
+        # get the image link from the api
+        link = self.api.get_photo_link()
+        # open the image using PIL.Image
+        self.im = PIL.Image.open(requests.get(link, stream=True).raw)
+        # display the image
+        self.change_img()
+    def __init__(self, master):
+        tk.Frame.__init__(self, master=master)
+        # initialise the nasa api object
+        self.api = NASA_API()
         self.master = master
-        self.create_widgets()
-        self.api = NASA_API() 
-    # function used to create the widgets and putting them into the frame
-    def create_widgets(self):
-        print("creo widgets")
-        # button to get the picture
-        self.get_photo_button = tk.Button(self)
-        self.get_photo_button["text"] = "get the Picture"
-        self.get_photo_button["command"] = self.put_image_on_label
-        self.get_photo_button.pack()
-
-        # button to save the photo
-        self.save_photo_button = tk.Button(self)
-        self.save_photo_button["text"] = "save the photo"
-        self.save_photo_button["state"] = "disabled"
-        self.save_photo_button.pack()
-
-        self.lbl = tk.Label(self)
-        self.lbl.pack()
-    def put_image_on_label(self):
-        link = api.get_photo_link()
-        img = ImageTk.PhotoImage(Image.open(requests.get(link, stream=True).raw))
-        self.lbl["image"] = img
+        # create all the widgets which will be used
+        self.create_widget()
 
 if(__name__== "__main__"):
-    api = NASA_API() 
-    print(api.get_photo_link())
+    # api = NASA_API() 
+    # print(api.get_photo_link())
     root = tk.Tk()
-    app = Application(master=root)
-    app.mainloop()
+    app = Application(root)
+    root.mainloop()
