@@ -28,6 +28,10 @@ class nasa_api():
         if(j["media_type"] == "image"):
             return j["hdurl"]
         pass
+    def get_photo_title(self):
+        j = json.loads(self.get_APOC_json())
+        if(j["media_type"] == "image"):
+            return j["title"]
     def get_APOC_json(self):
         r = requests.get(self.base_link+self.api_key)
         if(r.status_code != 200):
