@@ -6,7 +6,6 @@ class nasa_api():
         # initialise base informations
         # setup the base link for the requests
         self.base_link = "https://api.nasa.gov/planetary/apod?api_key="
-
         # read the api from the file
         self.api_key = ""
         with open(file_path,"r") as f:
@@ -22,7 +21,13 @@ class nasa_api():
 
     def get_photo_link(self):
         # return the image link by parsing the json
-        
+        # get the json from NASA api
+        j = json.loads(self.get_APOC_json())
+        if(j["media_type"] == "image"):
+            return j["url"]
+        pass
+    def get_hd_photo_link(self):
+         # return the image link by parsing the json
         # get the json from NASA api
         j = json.loads(self.get_APOC_json())
         if(j["media_type"] == "image"):
