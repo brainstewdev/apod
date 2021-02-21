@@ -3,3 +3,6 @@
 !README.md
 !src
 !src/*
+!requirements.txt
+__pycache__
+!icon.png
