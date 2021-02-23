@@ -5,9 +5,10 @@ in this project there is a GUI application which can be used to see and save the
 ## how can i run the program?
 you'll need:
 - python (i'm using python 3.9)
-then you can simply install all the required library by calling pip install -r requirements.txt when inside of the 
-project directory. you should use virtual enviroment but it isn't necessary.
-then you need to put your NASA api key (that can be requested [here](https://api.nasa.gov)) in a file which needs to be
+you can install all the required library by calling pip install -r requirements.txt when inside of the 
+project directory. 
+you should use virtual enviroment but it isn't necessary.
+you need to put your NASA api key (that can be requested [here](https://api.nasa.gov)) in a file which needs to be
 called key, in the root directory of the project. 
-you can then call py .\\src\\main.py from the root directory and it should run.
+you can then run the main.py file.
 in the future a startup and an install script will be provided.
