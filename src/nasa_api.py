@@ -22,19 +22,19 @@ class nasa_api():
     def get_photo_link(self):
         # return the image link by parsing the json
         # get the json from NASA api
-        j = json.loads(self.get_APOC_json())
+        j = self.get_json_from_text(self.get_APOC_json())
         if(j["media_type"] == "image"):
             return j["url"]
         pass
     def get_hd_photo_link(self):
          # return the image link by parsing the json
         # get the json from NASA api
-        j = json.loads(self.get_APOC_json())
+        j = self.get_json_from_text(self.get_APOC_json())
         if(j["media_type"] == "image"):
             return j["hdurl"]
         pass
     def get_photo_title(self):
-        j = json.loads(self.get_APOC_json())
+        j = self.get_json_from_text(self.get_APOC_json())
         if(j["media_type"] == "image"):
             return j["title"]
     def get_APOC_json(self):
@@ -45,3 +45,5 @@ class nasa_api():
             return r.text
     def get_stream_from_link(self, link):
         return requests.get(link, stream=True).raw
+    def get_json_from_text(self, text):
+        return json.loads(text)
