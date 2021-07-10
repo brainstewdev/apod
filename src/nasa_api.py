@@ -1,8 +1,8 @@
 import requests
 import json
-
+import os
 class nasa_api():
-    def __init__(self, file_path="./key"):
+    def __init__(self, file_path=f".{os.path.sep}key"):
         # initialise base informations
         # setup the base link for the requests
         self.base_link = "https://api.nasa.gov/planetary/apod?api_key="

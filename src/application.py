@@ -3,6 +3,7 @@ import PIL.Image
 import PIL.ImageTk
 import PIL.ImageOps
 import tkinter as tk
+import os
 from nasa_api import nasa_api
 
 class Application(tk.Frame):
@@ -41,7 +42,7 @@ class Application(tk.Frame):
         # get the string to be a valid filename (as seen in this answer: https://stackoverflow.com/questions/295135/turn-a-string-into-a-valid-filename#comment25028115_295152)
         fname = "".join(i for i in fname if i not in "\/:*?<>|")
         # save the image
-        self.im.save(f"images\\{fname}.jpg")
+        self.im.save(f"images{os.path.sep}{fname}.jpg")
     def open_image(self):
         # get the image link from the api
         link = self.api.get_photo_link()
@@ -57,7 +58,7 @@ class Application(tk.Frame):
         tk.Frame.__init__(self, master=master)
         master.title("APOC")
         # set the icon
-        self.icon = tk.PhotoImage(file = '.\\icon.png')
+        self.icon = tk.PhotoImage(file = f'.{os.path.sep}icon.png')
         master.iconphoto(False, self.icon)
         # initialise the nasa api object
         self.api = nasa_api()
